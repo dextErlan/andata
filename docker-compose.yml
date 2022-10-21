@@ -1,0 +1,37 @@
+version: "3.1"
+
+services:
+  nginx:
+    image: nginx:stable-alpine
+    volumes:
+      - ${BACKEND_ROOT-./backend}:/var/www:z
+      - ${NGINX_CONFIG-./docker/config/nginx}:/etc/nginx/conf.d:z
+    ports:
+      - "${HOST_MACHINE_UNSECURE_HOST_PORT-8080}:80"
+    links:
+      - php
+  php:
+    build:
+      context: docker/php8.0
+    links:
+      - mysql
+    working_dir: /var/www
+    volumes:
+      - ${BACKEND_ROOT-./backend}:/var/www:z
+  mysql:
+    image: mysql
+    ports:
+      - "${HOST_MACHINE_MYSQL_PORT-3306}:3306"
+    volumes:
+      - ${MYSQL_DATA_DIR-./docker/data/mysql}:/var/lib/mysql
+      - ${MYSQL_LOG_DIR-./docker/logs/mysql}:/var/log/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD-secret}
+      MYSQL_DATABASE: ${MYSQL_DATABASE-test_db}
+      MYSQL_USER: ${MYSQL_USER-admin}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD-secret}
+  front:
+    build:
+      context: frontend
+    volumes:
+      - ${FRONTEND_ROOT-./frontend}:/usr/app:z
