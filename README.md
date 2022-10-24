@@ -45,4 +45,4 @@
  - Запустите команду ```./bin/doctrine orm:schema-tool:update --force``` для установки БД.
  - Запустите команду ```./vendor/phpunit/phpunit/phpunit``` для запуска тестов.
 
-Проект доступен по адресу http://172.21.0.2:8000/
+Проект доступен по адресу http://localhost:8080/

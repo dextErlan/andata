@@ -5,7 +5,7 @@ use Laminas\Diactoros\ServerRequestFactory;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$container = require 'config/container.php';
+$container = require __DIR__ . '/../config/container.php';
 
 $httpKernel = $container->get(HttpKernel::class);
 

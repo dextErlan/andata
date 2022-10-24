@@ -16,8 +16,21 @@ class CommentListAction implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $comments = $this->entityManager->getRepository('Comment')->findAll();
+        $comments = $this->entityManager->getRepository('App\Entity\Comment')->findAll();
 
-        return new JsonResponse($comments);
+        return new JsonResponse(
+            array_map(
+                function($comment) {
+                    return [
+                        'username' => $comment->getUsername(),
+                        'email' => $comment->getEmail()->getEmail(),
+                        'commentTitle' => $comment->getTitle(),
+                        'commentText' => $comment->getText(),
+                        'created' => $comment->getCreated()->format('Y-m-d H:i:s'),
+                    ];
+                },
+                $comments
+            )
+        );
     }
 }

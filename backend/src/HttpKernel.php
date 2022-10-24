@@ -27,8 +27,8 @@ class HttpKernel
         $map = $this->routerContainer->getMap();
 
         // add a route to the map, and a handler for it
-        $map->get('comment-list', '/comment', CommentListAction::class);
-        $map->post('comment-create', '/comment', CommentCreateAction::class);
+        $map->get('comment-list', '/api/comment', CommentListAction::class);
+        $map->post('comment-create', '/api/comment', CommentCreateAction::class);
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -37,7 +37,7 @@ class HttpKernel
 
         $route = $matcher->match($request);
         if (!$route) {
-            return new JsonResponse("Страница не найдена!", 404);
+            return new JsonResponse(["Страница не найдена!"], 404);
         }
 
         foreach ($route->attributes as $key => $val) {

@@ -10,6 +10,7 @@ services:
       - "${HOST_MACHINE_UNSECURE_HOST_PORT-8080}:80"
     links:
       - php
+      - front
   php:
     build:
       context: docker/php8.0

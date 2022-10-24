@@ -19,7 +19,7 @@ class CommentCreateAction implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $parsedBody = $request->getParsedBody();
+        $parsedBody = json_decode($request->getBody()->getContents(), true);
 
         if (
             empty($parsedBody['username'])
@@ -46,6 +46,13 @@ class CommentCreateAction implements RequestHandlerInterface
         $this->entityManager->persist($comment);
         $this->entityManager->flush();
 
-        return new JsonResponse($comment);
+        return new JsonResponse([
+            'id' => $comment->getId(),
+            'username' => $comment->getUsername(),
+            'email' => $comment->getEmail()->getEmail(),
+            'commentTitle' => $comment->getTitle(),
+            'commentText' => $comment->getText(),
+            'created' => $comment->getCreated()->format('Y-m-d H:i:s'),
+        ]);
     }
 }

@@ -39,6 +39,11 @@ class Comment
         $this->created = new DateTime('now');
     }
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
     public function getUsername(): string
     {
         return $this->username;
